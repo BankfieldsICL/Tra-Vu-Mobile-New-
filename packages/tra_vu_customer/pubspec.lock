@@ -521,7 +521,7 @@ packages:
     source: hosted
     version: "2.1.0"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
@@ -645,7 +645,7 @@ packages:
     source: hosted
     version: "15.0.2"
   vynemit_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: vynemit_flutter
       sha256: "66cdf39c95518911c895b870aa2b2048188c06ed26f55c56b544be71ff2b3eac"

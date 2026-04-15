@@ -16,6 +16,8 @@ import 'app/modules/auth/views/login_view.dart';
 import 'app/modules/auth/views/otp_view.dart';
 import 'app/modules/auth/controllers/auth_controller.dart';
 import 'app/services/location_service.dart';
+import 'package:provider/provider.dart';
+import 'package:vynemit_flutter/vynemit_flutter.dart';
 
 import 'app/modules/history/history_view.dart';
 import 'app/modules/history/history_controller.dart';
@@ -40,7 +42,24 @@ void main() async {
   // Initialize App-Specific APIs
   Get.put(CustomerApi());
 
-  runApp(const CustomerApp());
+  // Initialize Notification SDK
+  final notificationConfig = NotificationConfig(
+    apiUrl: "${ApiConfig.baseUrl}/v1",
+    userId: Get.find<AuthService>().currentUserId.value ?? 'unknown',
+    getAuthToken: () async => Get.find<AuthService>().currentUserToken.value ?? '',
+    onRefreshAuth: () async => Get.find<AuthService>().refreshToken(),
+    realtimeTransport: RealtimeTransport.websocket,
+    wsUrl: ApiConfig.baseSocketUrl,
+    debug: true,
+    onDebugEvent: (event) => debugPrint("Vynemit Debug: $event"),
+  );
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => VynemitProvider(notificationConfig),
+      child: const CustomerApp(),
+    ),
+  );
 }
 
 class CustomerApp extends StatelessWidget {

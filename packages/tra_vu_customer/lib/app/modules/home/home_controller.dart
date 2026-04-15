@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -205,6 +207,7 @@ class HomeController extends GetxController {
   Future<void> fetchMyTrips() async {
     try {
       final memberships = await _customerApi.getMyTripMemberships();
+      debugPrint('Fetched ${memberships.first.toMap()} of ${memberships.length} trip memberships');
       myActiveTrips.assignAll(memberships.where((m) => 
         m.status == TripMemberStatus.approved || 
         m.status == TripMemberStatus.pending

@@ -10,7 +10,7 @@ import 'package:tra_vu_core/sockets/tracking_socket_service.dart';
 import 'package:provider/provider.dart';
 import 'package:vynemit_flutter/vynemit_flutter.dart';
 
-class AuthService extends GetxService {
+class AuthService extends GetxService { 
   final _storage = const FlutterSecureStorage();
   Future<bool>? _restoreSessionFuture;
   Future<String?>? _refreshTokenFuture;

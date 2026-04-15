@@ -10,6 +10,7 @@ import 'widgets/ride_booking_panel.dart';
 import 'widgets/delivery_booking_panel.dart';
 import 'widgets/carpool_booking_panel.dart';
 import 'widgets/service_selector.dart';
+import 'package:vynemit_flutter/vynemit_flutter.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -314,6 +315,15 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             const SizedBox(width: 8),
+            NotificationBadge(
+              child: IconButton(
+                icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF475467)),
+                onPressed: () => _openNotificationCenter(context),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+            ),
+            const SizedBox(width: 8),
             _buildKebabMenu(context, authService),
           ],
         );
@@ -432,6 +442,56 @@ class HomeView extends GetView<HomeController> {
         status.displayName,
         style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
       ),
+    );
+  }
+
+  void _openNotificationCenter(BuildContext context) {
+    Get.bottomSheet(
+      SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.7,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(24),
+                child: Row(
+                  children: [
+                    Text(
+                      'Notifications',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF0F172A),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              const Expanded(
+                child: NotificationList(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
     );
   }
 }

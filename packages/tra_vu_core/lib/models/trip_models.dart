@@ -99,7 +99,7 @@ class TripMemberModel extends BaseModel {
   final UserModel? user;
   final int seatsRequested;
   final TripMemberStatus status;
-  final String? otp;
+  final String? boardingOtp;
 
   const TripMemberModel({
     required super.id,
@@ -112,7 +112,7 @@ class TripMemberModel extends BaseModel {
     this.user,
     required this.seatsRequested,
     this.status = TripMemberStatus.pending,
-    this.otp,
+    this.boardingOtp,
   });
 
   factory TripMemberModel.fromMap(Map<String, dynamic> map) {
@@ -133,7 +133,7 @@ class TripMemberModel extends BaseModel {
       status: map['status'] != null
           ? TripMemberStatusExtension.fromString(map['status'] as String)
           : TripMemberStatus.pending,
-      otp: map['otp'] as String?,
+      boardingOtp: map['boardingOtp'] as String?,
     );
   }
 
@@ -149,7 +149,7 @@ class TripMemberModel extends BaseModel {
       if (user != null) 'user': user!.toMap(),
       'seatsRequested': seatsRequested,
       'status': status.name,
-      if (otp != null) 'otp': otp,
+      if (boardingOtp != null) 'boardingOtp': boardingOtp,
     };
   }
 
@@ -166,7 +166,7 @@ class TripMemberModel extends BaseModel {
     UserModel? user,
     int? seatsRequested,
     TripMemberStatus? status,
-    String? otp,
+    String? boardingOtp,
   }) {
     return TripMemberModel(
       id: id ?? this.id,
@@ -179,7 +179,7 @@ class TripMemberModel extends BaseModel {
       user: user ?? this.user,
       seatsRequested: seatsRequested ?? this.seatsRequested,
       status: status ?? this.status,
-      otp: otp ?? this.otp,
+      boardingOtp: boardingOtp ?? this.boardingOtp,
     );
   }
 }
