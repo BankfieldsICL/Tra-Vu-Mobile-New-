@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 
 class ApiConfig {
-  static const String _debugBaseUrl = 'http://192.168.1.8:4050/api';
+  // static const String _debugBaseUrl = 'http://192.168.1.8:4050/api';
+  static const String _debugBaseUrl = 'http://157.245.249.95:3001/api';
   static const String _releaseBaseUrl = 'https://api.tra-vu.com/api';
 
-  static const String _debugHostUrl = 'http://192.168.1.8:4050';
+  // static const String _debugHostUrl = 'http://192.168.1.8:4050';
+  static const String _debugHostUrl = 'http://157.245.249.95:3001';
   static const String _releaseHostUrl = 'https://api.tra-vu.com';
 
   static const String version = '/v1';
