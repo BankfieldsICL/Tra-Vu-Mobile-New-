@@ -14,7 +14,7 @@ class ApiConfig {
   static const String baseUrl = kDebugMode ? _debugBaseUrl : _releaseBaseUrl;
   static const String baseSocketUrl = "${kDebugMode ? _debugHostUrl : _releaseHostUrl}/tracking";
   static const String tenantId = 'f5f93beb-0b1d-4812-b3a3-703cd0a76bd5';
-  static const String apiKey = 'tv_730ba20116d83dd5348455c8697162dae6ede1ad54c0e691';
+  static const String apiKey = 'tv_caf575a4b5184203a71d21b316f55e814e09d1a0c2e500d8';
   
   // Refresh token endpoint
   static const String refreshTokenEndpoint = '$version/auth/refresh';

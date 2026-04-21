@@ -1,4 +1,4 @@
-package com.example.tra_vu_driver
+package com.travu.driver
  
 import android.app.NotificationChannel
 import android.app.NotificationManager

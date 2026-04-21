@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tra_vu_driver"
+    namespace = "com.travu.driver"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.tra_vu_driver"
+        applicationId = "com.travu.driver"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

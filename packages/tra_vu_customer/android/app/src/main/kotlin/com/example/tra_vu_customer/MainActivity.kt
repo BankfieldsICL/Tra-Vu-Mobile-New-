@@ -1,4 +1,4 @@
-package com.example.tra_vu_customer
+package com.travu.travu
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
