@@ -490,8 +490,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 626D2UL5L3;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.0;
-				FLUTTER_BUILD_NUMBER = 55;
+				FLUTTER_BUILD_NAME = 1.3.0;
+				FLUTTER_BUILD_NUMBER = 56;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tra-Vu Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
@@ -683,8 +683,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 626D2UL5L3;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.0;
-				FLUTTER_BUILD_NUMBER = 55;
+				FLUTTER_BUILD_NAME = 1.3.0;
+				FLUTTER_BUILD_NUMBER = 56;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tra-Vu Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
@@ -716,8 +716,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 626D2UL5L3;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.0;
-				FLUTTER_BUILD_NUMBER = 55;
+				FLUTTER_BUILD_NAME = 1.3.0;
+				FLUTTER_BUILD_NUMBER = 56;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tra-Vu Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
