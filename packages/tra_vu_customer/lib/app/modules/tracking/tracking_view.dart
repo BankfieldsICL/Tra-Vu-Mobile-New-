@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:tra_vu_core/models/job_status.dart';
 import 'package:tra_vu_core/models/shared_models.dart';
+import 'package:tra_vu_customer/app/services/amount_formatter.dart';
 import 'tracking_controller.dart';
 
 class TrackingView extends GetView<TrackingController> {
@@ -38,47 +39,44 @@ class TrackingView extends GetView<TrackingController> {
 
             if (job != null) {
               // Pickup marker (red)
-              markers.add(Marker(
-                point: LatLng(
-                  job.pickupLocation.lat,
-                  job.pickupLocation.lng,
-                ),
-                width: 40,
-                height: 40,
-                child: const Icon(
-                  Icons.location_on_rounded,
-                  color: Color(0xFFDC2626),
-                  size: 36,
-                ),
-              ));
-
-              // Dropoff marker (green)
-              if (job.dropoffLocation != null) {
-                markers.add(Marker(
-                  point: LatLng(
-                    job.dropoffLocation!.lat,
-                    job.dropoffLocation!.lng,
-                  ),
+              markers.add(
+                Marker(
+                  point: LatLng(job.pickupLocation.lat, job.pickupLocation.lng),
                   width: 40,
                   height: 40,
                   child: const Icon(
-                    Icons.flag_rounded,
-                    color: Color(0xFF059669),
+                    Icons.location_on_rounded,
+                    color: Color(0xFFDC2626),
                     size: 36,
                   ),
-                ));
+                ),
+              );
+
+              // Dropoff marker (green)
+              if (job.dropoffLocation != null) {
+                markers.add(
+                  Marker(
+                    point: LatLng(
+                      job.dropoffLocation!.lat,
+                      job.dropoffLocation!.lng,
+                    ),
+                    width: 40,
+                    height: 40,
+                    child: const Icon(
+                      Icons.flag_rounded,
+                      color: Color(0xFF059669),
+                      size: 36,
+                    ),
+                  ),
+                );
               }
             }
 
             return FlutterMap(
-              options: MapOptions(
-                initialCenter: center,
-                initialZoom: 15.0,
-              ),
+              options: MapOptions(initialCenter: center, initialZoom: 15.0),
               children: [
                 TileLayer(
-                  urlTemplate:
-                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   userAgentPackageName: 'com.travu.customer',
                   maxNativeZoom: 19,
                 ),
@@ -168,7 +166,8 @@ class TrackingView extends GetView<TrackingController> {
                             ? '${driver!.user!.firstName} ${driver.user!.lastName}'
                                   .trim()
                             : null;
-                        final title = driverName ??
+                        final title =
+                            driverName ??
                             packageDetails?['receiverName']?.toString() ??
                             'Ride request';
                         final subtitle = driver != null
@@ -307,13 +306,11 @@ class TrackingView extends GetView<TrackingController> {
   }
 
   String _formatMinorAmount(int amount, String currency) {
-    final major = (amount / 100).toStringAsFixed(2);
-    return '${currency.toUpperCase()} $major';
+    return AmountFormatter.withCurrencyCode(amount / 100, currency);
   }
 
   String _formatMajorAmount(int amount, String currency) {
-    final major = (amount).toStringAsFixed(2);
-    return '${currency.toUpperCase()} $major';
+    return AmountFormatter.withCurrencyCode(amount, currency);
   }
 
   String _statusSubtitle(MatchingMode? matchingMode, JobStatus status) {

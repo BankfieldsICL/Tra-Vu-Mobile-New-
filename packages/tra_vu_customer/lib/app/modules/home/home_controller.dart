@@ -306,11 +306,11 @@ class HomeController extends GetxController {
 
       final payload = _unwrapObject(response.data);
       if (payload != null) {
-        final amountMinor = payload['availableBalance'] ??
+        final balance = payload['availableBalance'] ??
             payload['balance'] ??
             payload['amount'] ??
             0;
-        walletBalance.value = (amountMinor as num).toDouble() / 100;
+        walletBalance.value = (balance as num).toDouble();
         walletCurrency.value =
             (payload['currency']?.toString() ?? 'NGN').toUpperCase();
       }

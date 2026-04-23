@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tra_vu_core/tra_vu_core.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../services/amount_formatter.dart';
 import 'payment_webview.dart';
 
 class WalletController extends GetxController {
@@ -16,8 +17,7 @@ class WalletController extends GetxController {
   final RxString localCurrencyCode = 'NGN'.obs;
   final RxBool isLoading = true.obs;
   final RxnString loadError = RxnString();
-  final RxList<TransactionModel> transactions =
-      <TransactionModel>[].obs;
+  final RxList<TransactionModel> transactions = <TransactionModel>[].obs;
 
   bool get _hasBaseBalance => activeBaseUsd.value != 0;
   bool get _hasLocalBalance => activeLocalCurrency.value != 0;
@@ -90,7 +90,7 @@ class WalletController extends GetxController {
       return;
     }
 
-    final amountMinor = (amountMajor * 100).round();
+    final amount = (amountMajor).round();
 
     try {
       // Show loading overlay
@@ -100,7 +100,7 @@ class WalletController extends GetxController {
       );
 
       final intent = await _customerApi.initializePayment(
-        amount: amountMinor,
+        amount: amount,
         currency: 'NGN',
         provider: 'paystack',
         paymentMode: PaymentMode.direct,
@@ -177,16 +177,16 @@ class WalletController extends GetxController {
       return;
     }
 
-    final amountMinor = _readMinorAmount(
+    final amountMajor = _readBalanceAmount(
       payload['availableBalance'] ??
           payload['balance'] ??
           payload['amount'] ??
           payload['available'],
-    );
+    ).toDouble();
     final currency =
         (payload['currency']?.toString() ?? (isBaseCurrency ? 'USD' : 'NGN'))
             .toUpperCase();
-    final amountMajor = amountMinor / 100;
+    // final amountMajor = amountMinor / 1;
 
     if (isBaseCurrency) {
       activeBaseUsd.value = amountMajor;
@@ -235,7 +235,7 @@ class WalletController extends GetxController {
     return const [];
   }
 
-  int _readMinorAmount(dynamic rawAmount) {
+  int _readBalanceAmount(dynamic rawAmount) {
     if (rawAmount == null) {
       return 0;
     }
@@ -252,11 +252,11 @@ class WalletController extends GetxController {
   }
 
   String formatMajorAmount(double amount, String currency) {
-    return _formatNumberWithGrouping(amount);
+    return AmountFormatter.decimal(amount);
   }
 
   String formatMinorAmount(int amountMinor, String currency) {
-    return _formatNumberWithGrouping(amountMinor / 100);
+    return AmountFormatter.decimal(amountMinor / 100);
   }
 
   String _formatSignedAmount({
@@ -316,21 +316,6 @@ class WalletController extends GetxController {
       default:
         return currency.toUpperCase();
     }
-  }
-
-  String _formatNumberWithGrouping(double amount) {
-    final fixed = amount.toStringAsFixed(2);
-    final parts = fixed.split('.');
-    final whole = parts.first;
-    final fraction = parts.length > 1 ? parts[1] : '00';
-    final isNegative = whole.startsWith('-');
-    final digits = isNegative ? whole.substring(1) : whole;
-    final grouped = digits.replaceAllMapped(
-      RegExp(r'\B(?=(\d{3})+(?!\d))'),
-      (_) => ',',
-    );
-
-    return '${isNegative ? '-' : ''}$grouped.$fraction';
   }
 
   String _readableErrorMessage(Object error, {required String fallback}) {

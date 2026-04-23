@@ -101,9 +101,7 @@ class WalletView extends GetView<WalletController> {
                           onTap: () => _showTransactionDetails(context, tx),
                           contentPadding: EdgeInsets.zero,
                           leading: CircleAvatar(
-                            backgroundColor: isCredit
-                                ? _blueSoft
-                                : _orangeSoft,
+                            backgroundColor: isCredit ? _blueSoft : _orangeSoft,
                             child: Icon(
                               isCredit
                                   ? Icons.arrow_downward
@@ -128,8 +126,8 @@ class WalletView extends GetView<WalletController> {
                             children: [
                               Text(
                                 tx.amountMinor > 0
-                                    ? '+${controller.formatMinorAmount((tx.amountMinor / 100).toInt(), tx.currency)}'
-                                    : '-${controller.formatMinorAmount((tx.amountMinor.abs() / 100).toInt(), tx.currency)}',
+                                    ? '+${controller.formatMinorAmount(tx.amountMinor, tx.currency)}'
+                                    : '-${controller.formatMinorAmount(tx.amountMinor.abs(), tx.currency)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -251,8 +249,8 @@ class WalletView extends GetView<WalletController> {
                         children: [
                           Text(
                             isCredit
-                                ? '+${_displayAmount((tx.amountMinor / 100).toInt(), tx.currency)}'
-                                : '-${_displayAmount((tx.amountMinor.abs() / 100).toInt(), tx.currency)}',
+                                ? '+${_displayAmount(tx.amountMinor, tx.currency)}'
+                                : '-${_displayAmount(tx.amountMinor.abs(), tx.currency)}',
                             style: TextStyle(
                               color: isCredit ? _blue : _orange,
                               fontSize: 26,
@@ -269,47 +267,27 @@ class WalletView extends GetView<WalletController> {
                       'Transaction',
                       _readableReferenceType(tx.referenceType),
                     ),
-                    _detailRow(
-                      'Type',
-                      isCredit ? 'Money in' : 'Money out',
-                    ),
-                    _detailRow(
-                      'Status',
-                      _readableStatus(tx.status),
-                    ),
+                    _detailRow('Type', isCredit ? 'Money in' : 'Money out'),
+                    _detailRow('Status', _readableStatus(tx.status)),
                     _detailRow(
                       'Amount',
-                      _displayAmount((tx.amountMinor.abs() / 100).toInt(), tx.currency),
+                      _displayAmount(tx.amountMinor.abs(), tx.currency),
                     ),
                     _detailRow('Currency', tx.currency),
-                    _detailRow(
-                      'Date',
-                      _formatDateTime(tx.createdAt),
-                    ),
-                    _detailRow(
-                      'Recorded',
-                      _formatDateTime(tx.updatedAt),
-                    ),
-                    _detailRow(
-                      'Reference',
-                      _humanReference(tx),
-                    ),
-                    _detailRow(
-                      'Summary',
-                      _transactionSummary(tx),
-                    ),
+                    _detailRow('Date', _formatDateTime(tx.createdAt)),
+                    _detailRow('Recorded', _formatDateTime(tx.updatedAt)),
+                    _detailRow('Reference', _humanReference(tx)),
+                    _detailRow('Summary', _transactionSummary(tx)),
                     if (tx.tags.isNotEmpty)
                       _detailSection(
                         'Labels',
-                        tx.tags
-                            .map(_readableReferenceType)
-                            .join(', '),
+                        tx.tags.map(_readableReferenceType).join(', '),
                       ),
                     if (tx.metadata['note'] != null)
                       _detailSection(
                         'More Info',
                         tx.metadata['note'].toString(),
-                    ),
+                      ),
                   ],
                 ),
               ),
@@ -358,10 +336,7 @@ class WalletView extends GetView<WalletController> {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                color: _ink,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(color: _ink, fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -377,10 +352,7 @@ class WalletView extends GetView<WalletController> {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: _slate,
-              fontWeight: FontWeight.w700,
-            ),
+            style: const TextStyle(color: _slate, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
           Container(
@@ -393,10 +365,7 @@ class WalletView extends GetView<WalletController> {
             ),
             child: Text(
               body,
-              style: const TextStyle(
-                color: _ink,
-                height: 1.45,
-              ),
+              style: const TextStyle(color: _ink, height: 1.45),
             ),
           ),
         ],
@@ -513,7 +482,9 @@ class WalletView extends GetView<WalletController> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Enter the amount you want to add to your wallet (NGN).'),
+            const Text(
+              'Enter the amount you want to add to your wallet (NGN).',
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: amountController,
@@ -580,9 +551,7 @@ class WalletView extends GetView<WalletController> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.08),
-        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
             color: _blueDark.withValues(alpha: 0.25),
@@ -602,13 +571,14 @@ class WalletView extends GetView<WalletController> {
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: _orange.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(999),
-                  border: Border.all(
-                    color: _orange.withValues(alpha: 0.28),
-                  ),
+                  border: Border.all(color: _orange.withValues(alpha: 0.28)),
                 ),
                 child: const Text(
                   'Active',
@@ -628,7 +598,8 @@ class WalletView extends GetView<WalletController> {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text(
-                  controller.primaryBalanceSymbol == controller.primaryBalanceCurrencyCode
+                  controller.primaryBalanceSymbol ==
+                          controller.primaryBalanceCurrencyCode
                       ? '${controller.primaryBalanceCurrencyCode} '
                       : '${controller.primaryBalanceSymbol} ',
                   style: const TextStyle(

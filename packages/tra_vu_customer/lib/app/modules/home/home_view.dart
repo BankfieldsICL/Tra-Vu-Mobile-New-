@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:tra_vu_core/models/shared_models.dart';
 import 'package:tra_vu_core/services/auth_service.dart';
+import 'package:tra_vu_customer/app/services/amount_formatter.dart';
 import 'package:tra_vu_customer/app/modules/home/widgets/trip_otp_sheet.dart';
 import 'home_controller.dart';
 import 'widgets/ride_booking_panel.dart';
@@ -34,8 +35,7 @@ class HomeView extends GetView<HomeController> {
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'com.travu.customer',
                 maxNativeZoom: 19,
               ),
@@ -56,19 +56,35 @@ class HomeView extends GetView<HomeController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black.withValues(alpha: 0.8),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Obx(() => Text(
-                      controller.pickupLocation.value?.address ?? "Locating...",
-                      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-                    )),
+                    child: Obx(
+                      () => Text(
+                        controller.pickupLocation.value?.address ??
+                            "Locating...",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 4),
-                  const Icon(Icons.location_on_rounded, size: 40, color: Color(0xFF2563EB)),
-                  const SizedBox(height: 34), // Offset for pin tip to align with center
+                  const Icon(
+                    Icons.location_on_rounded,
+                    size: 40,
+                    color: Color(0xFF2563EB),
+                  ),
+                  const SizedBox(
+                    height: 34,
+                  ), // Offset for pin tip to align with center
                 ],
               ),
             ),
@@ -147,7 +163,7 @@ class HomeView extends GetView<HomeController> {
                   },
             ),
           ),
-          
+
           Positioned(
             left: 24,
             right: 24,
@@ -186,13 +202,20 @@ class HomeView extends GetView<HomeController> {
                             color: Colors.green.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.group, color: Colors.green, size: 20),
+                          child: const Icon(
+                            Icons.group,
+                            color: Colors.green,
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         const Expanded(
                           child: Text(
                             'Upcoming Carpool',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                         _buildStatusChip(status),
@@ -218,21 +241,26 @@ class HomeView extends GetView<HomeController> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF101828),
                             foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       )
                     else
                       const Text(
                         "Waiting for driver approval...",
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.orange, fontSize: 12),
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.orange,
+                          fontSize: 12,
+                        ),
                       ),
                   ],
                 ),
               );
             }),
           ),
-        
         ],
       ),
     );
@@ -277,10 +305,10 @@ class HomeView extends GetView<HomeController> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: const Color(0xFF101828),
-                          letterSpacing: -0.5,
-                        ),
+                      fontWeight: FontWeight.w900,
+                      color: const Color(0xFF101828),
+                      letterSpacing: -0.5,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   GestureDetector(
@@ -293,12 +321,12 @@ class HomeView extends GetView<HomeController> {
                           isVisible
                               ? _formatBalance(balance, currency)
                               : '••••••••',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: const Color(0xFF667085),
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: isVisible ? 0 : 2,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: const Color(0xFF667085),
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: isVisible ? 0 : 2,
+                              ),
                         ),
                         const SizedBox(width: 6),
                         Icon(
@@ -317,7 +345,10 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(width: 8),
             NotificationBadge(
               child: IconButton(
-                icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF475467)),
+                icon: const Icon(
+                  Icons.notifications_none_rounded,
+                  color: Color(0xFF475467),
+                ),
                 onPressed: () => _openNotificationCenter(context),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -332,8 +363,7 @@ class HomeView extends GetView<HomeController> {
   }
 
   String _formatBalance(double amount, String currency) {
-    final symbol = currency == 'NGN' ? '₦' : '\$';
-    return '$symbol${amount.toStringAsFixed(2)}';
+    return AmountFormatter.withCurrencySymbol(amount, currency);
   }
 
   Widget _buildKebabMenu(BuildContext context, AuthService authService) {
@@ -367,32 +397,50 @@ class HomeView extends GetView<HomeController> {
       },
       itemBuilder: (context) => [
         _buildPopupItem('profile', Icons.person_outline, 'Update Profile'),
-        _buildPopupItem('wallet', Icons.account_balance_wallet_outlined, 'My Wallet'),
+        _buildPopupItem(
+          'wallet',
+          Icons.account_balance_wallet_outlined,
+          'My Wallet',
+        ),
         _buildPopupItem('history', Icons.history_rounded, 'Request History'),
         _buildPopupItem('support', Icons.support_agent_rounded, 'Support'),
         _buildPopupItem('settings', Icons.settings_outlined, 'Settings'),
         const PopupMenuDivider(),
-        _buildPopupItem('logout', Icons.logout_rounded, 'Log out', isDestructive: true),
+        _buildPopupItem(
+          'logout',
+          Icons.logout_rounded,
+          'Log out',
+          isDestructive: true,
+        ),
       ],
     );
   }
 
   PopupMenuItem<String> _buildPopupItem(
-      String value, IconData icon, String label,
-      {bool isDestructive = false}) {
+    String value,
+    IconData icon,
+    String label, {
+    bool isDestructive = false,
+  }) {
     return PopupMenuItem<String>(
       value: value,
       child: Row(
         children: [
-          Icon(icon,
-              size: 20,
-              color: isDestructive ? const Color(0xFFD92D20) : const Color(0xFF344054)),
+          Icon(
+            icon,
+            size: 20,
+            color: isDestructive
+                ? const Color(0xFFD92D20)
+                : const Color(0xFF344054),
+          ),
           const SizedBox(width: 12),
           Text(
             label,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isDestructive ? const Color(0xFFD92D20) : const Color(0xFF101828),
+              color: isDestructive
+                  ? const Color(0xFFD92D20)
+                  : const Color(0xFF101828),
             ),
           ),
         ],
@@ -440,7 +488,11 @@ class HomeView extends GetView<HomeController> {
       ),
       child: Text(
         status.displayName,
-        style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: color,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tra_vu_core/tra_vu_core.dart';
+import '../../services/amount_formatter.dart';
 import 'home_controller.dart';
 
 class DeliveryBookingController extends GetxController {
@@ -27,13 +28,14 @@ class DeliveryBookingController extends GetxController {
   void onInit() {
     super.onInit();
     final homeController = Get.find<HomeController>();
-    
+
     // Sync Pickup Address
     ever(homeController.pickupLocation, (loc) {
       if (loc != null) pickupAddressController.text = loc.address;
     });
     if (homeController.pickupLocation.value != null) {
-      pickupAddressController.text = homeController.pickupLocation.value!.address;
+      pickupAddressController.text =
+          homeController.pickupLocation.value!.address;
     }
 
     // Sync Drop-off Address
@@ -41,7 +43,8 @@ class DeliveryBookingController extends GetxController {
       if (loc != null) dropoffAddressController.text = loc.address;
     });
     if (homeController.destinationLocation.value != null) {
-      dropoffAddressController.text = homeController.destinationLocation.value!.address;
+      dropoffAddressController.text =
+          homeController.destinationLocation.value!.address;
     }
 
     senderNameController.text = 'John Doe';
@@ -181,16 +184,11 @@ class DeliveryBookingController extends GetxController {
   }
 
   String formatMinorAmount(int amount, String currency) {
-    final major = (amount / 100).toStringAsFixed(2);
-    if (currency.toUpperCase() == 'NGN') {
-      return 'NGN $major';
-    }
-    return '$currency $major';
+    return AmountFormatter.withCurrencyCode(amount / 100, currency);
   }
 
   String formatMajorAmount(int amount, String currency) {
-    final major = (amount).toStringAsFixed(2);
-    return '$currency $major';
+    return AmountFormatter.withCurrencyCode(amount, currency);
   }
 
   String _readableErrorMessage(Object error, {required String fallback}) {

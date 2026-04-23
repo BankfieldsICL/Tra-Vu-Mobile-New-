@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:tra_vu_core/tra_vu_core.dart';
+import '../../services/amount_formatter.dart';
 
 import 'home_controller.dart';
 
@@ -38,7 +39,10 @@ class RideBookingController extends GetxController {
     }
 
     if (dropoff == null) {
-      Get.snackbar('Missing Destination', 'Choose a destination before requesting a ride.');
+      Get.snackbar(
+        'Missing Destination',
+        'Choose a destination before requesting a ride.',
+      );
       return;
     }
 
@@ -80,13 +84,11 @@ class RideBookingController extends GetxController {
   }
 
   String formatMinorAmount(int amount, String currency) {
-    final major = (amount / 100).toStringAsFixed(2);
-    return '${currency.toUpperCase()} $major';
+    return AmountFormatter.withCurrencyCode(amount / 100, currency);
   }
 
   String formatMajorAmount(int amount, String currency) {
-    final major = (amount).toStringAsFixed(2);
-    return '${currency.toUpperCase()} $major';
+    return AmountFormatter.withCurrencyCode(amount, currency);
   }
 
   String _readableErrorMessage(Object error, {required String fallback}) {

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tra_vu_core/tra_vu_core.dart';
+import '../../services/amount_formatter.dart';
 
 class HistoryController extends GetxController {
   final CustomerApi _customerApi = Get.find<CustomerApi>();
@@ -42,9 +43,8 @@ class HistoryController extends GetxController {
         : 'Failed to load history. Please try again.';
   }
 
-  String formatPrice(int? amountMinor, String currency) {
-    if (amountMinor == null) return '---';
-    final symbol = currency == 'NGN' ? '₦' : '\$';
-    return '$symbol${(amountMinor / 100).toStringAsFixed(2)}';
+  String formatPrice(int? amountMajor, String currency) {
+    if (amountMajor == null) return '---';
+    return AmountFormatter.withCurrencySymbol(amountMajor, currency);
   }
 }
