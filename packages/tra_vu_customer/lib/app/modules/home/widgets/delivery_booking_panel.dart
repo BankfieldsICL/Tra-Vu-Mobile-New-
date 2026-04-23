@@ -158,7 +158,7 @@ class DeliveryBookingPanel extends GetView<DeliveryBookingController> {
             }
 
             final summary = job.estimatedPrice != null
-                ? controller.formatMinorAmount(
+                ? controller.formatMajorAmount(
                     job.estimatedPrice!,
                     job.currency,
                   )

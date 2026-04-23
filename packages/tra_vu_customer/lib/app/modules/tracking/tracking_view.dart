@@ -230,7 +230,7 @@ class TrackingView extends GetView<TrackingController> {
                             job?.dropoffLocation?.address ??
                             'Loading drop-off...';
                         final estimate = job?.estimatedPrice != null
-                            ? _formatMinorAmount(
+                            ? _formatMajorAmount(
                                 job!.estimatedPrice!,
                                 job.currency,
                               )
@@ -308,6 +308,11 @@ class TrackingView extends GetView<TrackingController> {
 
   String _formatMinorAmount(int amount, String currency) {
     final major = (amount / 100).toStringAsFixed(2);
+    return '${currency.toUpperCase()} $major';
+  }
+
+  String _formatMajorAmount(int amount, String currency) {
+    final major = (amount).toStringAsFixed(2);
     return '${currency.toUpperCase()} $major';
   }
 

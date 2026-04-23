@@ -411,10 +411,10 @@ class HomeView extends GetView<HomeController> {
     }
   }
 
-  String _formatMinorAmount(int amount, String currency) {
-    final major = (amount / 100).toStringAsFixed(2);
-    return '${currency.toUpperCase()} $major';
-  }
+  // String _formatMinorAmount(int amount, String currency) {
+  //   final major = (amount / 100).toStringAsFixed(2);
+  //   return '${currency.toUpperCase()} $major';
+  // }
 
   Widget _buildStatusChip(TripMemberStatus status) {
     Color color;

@@ -142,7 +142,7 @@ class DeliveryBookingController extends GetxController {
       }
 
       final summary = job.estimatedPrice != null
-          ? 'Estimated fare: ${formatMinorAmount(job.estimatedPrice!, job.currency)}'
+          ? 'Estimated fare: ${formatMajorAmount(job.estimatedPrice!, job.currency)}'
           : 'Delivery request submitted successfully.';
       Get.snackbar('Delivery Created', summary);
       Get.toNamed('/tracking?jobId=${job.id}', arguments: job.toJson());
@@ -185,6 +185,11 @@ class DeliveryBookingController extends GetxController {
     if (currency.toUpperCase() == 'NGN') {
       return 'NGN $major';
     }
+    return '$currency $major';
+  }
+
+  String formatMajorAmount(int amount, String currency) {
+    final major = (amount).toStringAsFixed(2);
     return '$currency $major';
   }
 

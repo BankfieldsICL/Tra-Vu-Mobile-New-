@@ -62,7 +62,7 @@ class RideBookingController extends GetxController {
       await homeController.refreshHomeData(silent: true);
 
       final summary = job.estimatedPrice != null
-          ? 'Estimated fare: ${formatMinorAmount(job.estimatedPrice!, job.currency)}'
+          ? 'Estimated fare: ${formatMajorAmount(job.estimatedPrice!, job.currency)}'
           : 'Ride request submitted successfully.';
       Get.snackbar('Ride Requested', summary);
       Get.toNamed('/tracking?jobId=${job.id}', arguments: job.toJson());
@@ -81,6 +81,11 @@ class RideBookingController extends GetxController {
 
   String formatMinorAmount(int amount, String currency) {
     final major = (amount / 100).toStringAsFixed(2);
+    return '${currency.toUpperCase()} $major';
+  }
+
+  String formatMajorAmount(int amount, String currency) {
+    final major = (amount).toStringAsFixed(2);
     return '${currency.toUpperCase()} $major';
   }
 

@@ -94,7 +94,7 @@ class RideBookingPanel extends GetView<RideBookingController> {
             }
 
             final summary = job.estimatedPrice != null
-                ? controller.formatMinorAmount(
+                ? controller.formatMajorAmount(
                     job.estimatedPrice!,
                     job.currency,
                   )
